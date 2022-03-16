@@ -1,19 +1,16 @@
 <script setup>
 import { useQuery } from '@vue/apollo-composable'
-import ALL_CHARACTER_QUERY from '@/apollo/allCharacters.query.gql'
+import { GET_ALL_CHARACTERS } from '@/apollo/queries'
+import SearchBar from '../components/SearchBar.vue';
 
-const { result } = useQuery(ALL_CHARACTER_QUERY)
+const { result } = useQuery(GET_ALL_CHARACTERS)
 
 </script>
 
 <template>
   <h2 class="text-xl font-bold">Search for Rick and Morty's characters</h2>
 
-  <nav>
-
-
-
-  </nav>
+  <SearchBar />
 
   <section>
 

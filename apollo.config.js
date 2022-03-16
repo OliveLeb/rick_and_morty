@@ -5,6 +5,6 @@ module.exports = {
       url: 'https://rickandmortyapi.com/graphql',
     },
 
-    includes: ['src/**/*.vue', 'src/**/*.js', 'src/**/*.gql'],
+    includes: ['src/**/*.vue', 'src/**/*.js'],
   },
 }
