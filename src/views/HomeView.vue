@@ -1,4 +1,9 @@
 <script setup>
+import { useQuery } from '@vue/apollo-composable'
+import ALL_CHARACTER_QUERY from '@/apollo/allCharacters.query.gql'
+
+const { result } = useQuery(ALL_CHARACTER_QUERY)
+
 </script>
 
 <template>
