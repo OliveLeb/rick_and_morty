@@ -21,7 +21,7 @@ import Icons from './Icons.vue';
       <template v-if="queryName === 'locations' ">
 
         <div v-for="el in categories" :key="el.id" >
-          <button @click="$emit('fetchCharacters', {type:'charLocation', variables: {locationId: Number(el.id) }})"
+          <button @click="$emit('fetchCharacters', {type:'charLocation', variables: {locationId: el.id }})"
             class="border rounded border-gray-300 p-2 hover:bg-rm-blue hover:text-white"
           >
             {{ el.name }}
@@ -39,7 +39,10 @@ import Icons from './Icons.vue';
 
         <div v-for="(episodes, season, index) in categories" :key="season" class="flex gap-4 mb-4">
           <div class="p-2 border-b rounded">{{ season }}: </div>
-          <button v-for="episode in episodes" :key="episode.id" class="border rounded border-gray-300 p-2 hover:bg-rm-blue hover:text-white items-center">
+          <button v-for="episode in episodes" :key="episode.id"
+            @click="$emit('fetchCharacters', {type:'charEpisode', variables: {episodeId: episode.id }})"
+            class="border rounded border-gray-300 p-2 hover:bg-rm-blue hover:text-white items-center"
+          >
             {{ episode.episode.slice(3) }}
           </button>
           <button class="self-end" 

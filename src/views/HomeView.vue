@@ -40,9 +40,9 @@ const data = useResult(result)
 
   <SearchBar @fetch-characters="fetchQuery" />
 
-  <section>
+  <section v-if="data">
 
-    <CharacterList v-if="data" :data="data" />
+    <CharacterList :data="data" />
 
   </section>
 
