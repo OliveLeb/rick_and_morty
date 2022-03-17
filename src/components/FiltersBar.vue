@@ -10,7 +10,6 @@
   const show = ref(true)
 
   const submit = () => {
-    console.log(form.value)
     emit('filterCharacters', {type: 'charAll', variables: {
       page: 1,
       filter: {

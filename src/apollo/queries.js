@@ -72,20 +72,3 @@ export const GET_ALL_CHARACTERS = gql`
     }
   }
 `
-
-export const GET_FILTERED_CHARACTERS = gql`
-  query getFilteredCharacters($page: Int, $filter: FilterCharacter) {
-    characters(page: $page, filter: $filter) {
-      info {
-        next
-        pages
-        prev
-      }
-      results {
-        name
-        image
-        id
-      }
-    }
-  }
-`

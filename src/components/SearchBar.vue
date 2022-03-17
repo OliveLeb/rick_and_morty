@@ -1,7 +1,5 @@
 <script setup>
-import { useQuery, useResult } from '@vue/apollo-composable'
-import { GET_EPISODES, GET_LOCATIONS, GET_FILTERED_CHARACTERS } from '@/apollo/queries'
-import { ref, markRaw, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { sortEpisodesPerSeason , objectOfArraysToArray } from '@/utils'
 import { useGql } from '@/composables'
 import SearchButton from './SearchButton.vue';
@@ -15,24 +13,14 @@ const emit = defineEmits({
   }
 })
 
-const queries = markRaw({
-  locations: GET_LOCATIONS,
-  episodes: GET_EPISODES,
-  filters: GET_FILTERED_CHARACTERS
-})
-
-const { variables, enable, queryName, fetchQuery, changePage } = useGql()
-
-const gqlQuery = computed(() => queryName.value && queries[queryName.value])
+const fetchCharacters = ({ type, variables }) => {
+  if (type === 'charAll') displaySearchList.value = false
+  emit('fetchCharacters', { type, variables })
+}
 
 
-const { result, onError, onResult } = useQuery(
-  gqlQuery,
-  variables,
-  () => ({ enabled: enable.value})
-)
 
-const data = useResult(result)
+const { data, queryName, fetchQuery, changePage } = useGql()
 
 const categories = ref([])
 
@@ -44,39 +32,16 @@ watch(data, (val) => {
 
     if (queryName.value == 'episodes') {
       if (Array.isArray(categories.value)) return categories.value = sortEpisodesPerSeason(val.results)
-        const newCategoryArray = objectOfArraysToArray(categories.value)
-
-        const arr = [...newCategoryArray, ...val.results]
-
-        categories.value = sortEpisodesPerSeason(arr)
-        return
+        
+      const newCategoryArray = objectOfArraysToArray(categories.value)
+      const arr = [...newCategoryArray, ...val.results]
+      categories.value = sortEpisodesPerSeason(arr)
+      return
     }
 
     categories.value = val.results
   }
 })
-
-onError(error => {
-  console.log(error.graphQLErrors)
-  console.log(error.networkError)
-})
-
-
-onResult(queryResult => {
-  if (!queryResult.loading){ 
-    enable.value = false
-  }
-})
-
-const fetchCharacters = ({ type, variables }) => {
-  if (type === 'charAll') displaySearchList.value = false
-  emit('fetchCharacters', { type, variables })
-}
-
-
-const filter = () => {
-
-}
 
 
 </script>

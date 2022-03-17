@@ -1,8 +1,26 @@
-import { ref } from 'vue'
+import { ref, markRaw, computed } from 'vue'
+import {
+  GET_ALL_CHARACTERS,
+  GET_CHARACTERS_BY_LOCATION,
+  GET_CHARACTERS_BY_EPISODE,
+  GET_EPISODES,
+  GET_LOCATIONS,
+} from '@/apollo/queries'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 export const useGql = () => {
   
 
+  const queries = markRaw({
+    charLocation: GET_CHARACTERS_BY_LOCATION,
+    charEpisode: GET_CHARACTERS_BY_EPISODE,
+    charAll: GET_ALL_CHARACTERS,
+    locations: GET_LOCATIONS,
+    episodes: GET_EPISODES,
+  })
+
+
+  // mutate to enable useQuery
   const enable = ref(false)
 
   // variables to pass to apollo-composable useQuery
@@ -20,7 +38,6 @@ export const useGql = () => {
   * set the variables if needed
   */
   const fetchQuery = (e) => {
-    console.log(e)
     queryName.value = e.type
     if (variables) variables.value = {...e.variables}
     enable.value = true
@@ -35,6 +52,31 @@ export const useGql = () => {
     enable.value = true
   }
 
+  /*
+  * Choose query depending of queryName
+  */
+  const gqlQuery = computed(() => queryName.value && queries[queryName.value])
+
+  /*
+  * Fetch the query, passing variable if needed
+  */
+  const { result, onError, onResult } = useQuery(
+    gqlQuery,
+    variables,
+    () => ({ enabled: enable.value})
+  )
+
+  const data = useResult(result)
+
+  /*
+  * Disable useQuery once fetching done
+  */
+  onResult((queryResult) => {
+    if (!queryResult.loading) {
+      enable.value = false
+    }
+  })
+
   
 
   return {
@@ -42,6 +84,7 @@ export const useGql = () => {
     enable,
     queryName,
     fetchQuery,
-    changePage
+    changePage,
+    data
   }
 }
