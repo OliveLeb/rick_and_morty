@@ -65,7 +65,7 @@ import Pagination from './Pagination.vue';
 
       <template v-if="queryName === 'locations' ">
 
-        <div class="flex flex-wrap gap-2 mb-4">
+        <div class="flex flex-wrap gap-2 mb-4 justify-center">
           <div v-for="el in cat" :key="el.id" >
             <button @click="$emit('fetchCharacters', {type:'charLocation', variables: {locationId: el.id }})"
               class="border rounded border-gray-300 p-1 hover:bg-rm-blue hover:text-white"

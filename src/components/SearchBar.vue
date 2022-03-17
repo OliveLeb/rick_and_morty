@@ -112,7 +112,7 @@ const clearFilters = () => {
     <FilterList v-if="data" :info="data.info" :categories="categories" :queryName="queryName"
       @change-page="changePage"
       @fetch-characters="fetchCharacters"
-      class="my-4 text-sm"
+      class="my-4 text-sm border rounded p-2"
     />
   </Transition>
 
