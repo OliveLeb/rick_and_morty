@@ -83,8 +83,8 @@ import Pagination from './Pagination.vue';
 
       <template v-if="queryName === 'episodes' ">
         <div class="flex flex-col">
-          <div v-for="(episodes, season) in cat" :key="season" class="flex gap-2 mb-4">
 
+          <div v-for="(episodes, season) in cat" :key="season" class="flex gap-2 mb-4">
               <div class="p-1 border-b rounded mr-1">{{ season }}: </div>
                 <button v-for="episode in episodes" :key="episode.id"
                 @click="$emit('fetchCharacters', {type:'charEpisode', variables: {episodeId: episode.id }})"

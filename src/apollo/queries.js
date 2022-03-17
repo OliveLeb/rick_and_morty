@@ -61,8 +61,8 @@ export const GET_CHARACTERS_BY_EPISODE = gql`
 
 export const GET_ALL_CHARACTERS = gql`
   ${INFO_PART}, ${CHARACTERS_PART}
-  query getCharacters($page: Int) {
-    characters(page: $page) {
+  query getCharacters($page: Int, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
       info {
         ...InfoParts
       }

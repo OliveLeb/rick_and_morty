@@ -20,6 +20,7 @@ export const useGql = () => {
   * set the variables if needed
   */
   const fetchQuery = (e) => {
+    console.log(e)
     queryName.value = e.type
     if (variables) variables.value = {...e.variables}
     enable.value = true

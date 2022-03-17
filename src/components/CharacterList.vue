@@ -22,18 +22,12 @@ import Pagination from '../components/Pagination.vue';
     emit('changePage', val, type)
   }
 
-  const title = computed(() => {
-    if (props.data.__typename === 'Characters') return `All Characters`
-    if (props.data.__typename === 'Location' ) return `Characters from ${props.data.name}`
-    if (props.data.__typename === 'Episode' ) return `Characters from ${props.data.name} - ${props.data.episode}`
-  })
 
 </script>
 
 
 <template>
   <section class="py-10">
-    <h2 class="text-3xl font bold text-center mb-10" >{{ title }}</h2>
 
     <Pagination v-if="data.info" :prev="data.info.prev" :next="data.info.next" :totalPages="data.info.pages"
       @change-page="changePage"
