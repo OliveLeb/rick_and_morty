@@ -8,7 +8,7 @@ const { result } = useQuery(GET_ALL_CHARACTERS)
 </script>
 
 <template>
-  <h2 class="text-xl font-bold">Search for Rick and Morty's characters</h2>
+  <h2 class="text-xl font-bold text-center">Search for Rick and Morty's characters</h2>
 
   <SearchBar />
 
