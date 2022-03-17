@@ -1,7 +1,7 @@
 module.exports = {
   client: {
     service: {
-      name: 'rick-and-morty-api',
+      name: 'rick-and-morty-vue',
       url: 'https://rickandmortyapi.com/graphql',
     },
 

@@ -14,8 +14,6 @@ const { result } = useQuery(GET_ALL_CHARACTERS)
 
   <section>
 
-
-
   </section>
 
 </template>
