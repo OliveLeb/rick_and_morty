@@ -1,29 +1,27 @@
-# rick_and_morty
+# Rick and Morty
 
-This template should help get you started developing with Vue 3 in Vite.
+This app allows you to search for Rick & Morty's characters.
 
-## Recommended IDE Setup
+## Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+Install the dependencies
 ```sh
-npm install
+yarn install
 ```
 
-### Compile and Hot-Reload for Development
-
+then launch dev mode
 ```sh
-npm run dev
+yarn dev
 ```
 
-### Compile and Minify for Production
-
+Or build for production
 ```sh
-npm run build
+yarn build
 ```
+
+## What did I use ?
+
+1. [Vue 3](https://vuejs.org) with [Vite](https://vitejs.dev/)
+2. [GraphQL](https://graphql.org/)
+3. [Apollo](https://www.apollographql.com/) and [Vue Apollo v4](https://apollo.vuejs.org/)
+4. [Tailwindcss](https://tailwindcss.com/)
