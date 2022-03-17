@@ -1,7 +1,7 @@
 <script setup>
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { GET_ALL_CHARACTERS, GET_CHARACTERS_BY_LOCATION, GET_CHARACTERS_BY_EPISODE } from '@/apollo/queries'
-import { ref, markRaw, computed, watch } from 'vue';
+import { markRaw, computed } from 'vue';
 import { useGql } from '@/composables'
 import SearchBar from '../components/SearchBar.vue';
 import CharacterList from '../components/CharacterList.vue';
@@ -32,7 +32,11 @@ onError(error => {
 
 const data = useResult(result)
 
-
+onResult(queryResult => {
+  if (!queryResult.loading){ 
+    enable.value = false
+  }
+})
 
 </script>
 
@@ -41,9 +45,22 @@ const data = useResult(result)
   <SearchBar @fetch-characters="fetchQuery" />
 
   <section v-if="data">
-
-    <CharacterList :data="data" />
+    <Transition>
+      <CharacterList :data="data" @change-page="changePage" />
+    </Transition>
 
   </section>
 
 </template>
+
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

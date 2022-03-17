@@ -4,8 +4,8 @@ import { GET_EPISODES, GET_LOCATIONS, GET_FILTERED_CHARACTERS } from '@/apollo/q
 import { ref, markRaw, computed, watch } from 'vue';
 import { sortEpisodesPerSeason , objectOfArraysToArray } from '@/utils'
 import { useGql } from '@/composables'
-import FilterButton from './FilterButton.vue';
-import FilterList from './FilterList.vue';
+import SearchButton from './SearchButton.vue';
+import SearchList from './SearchList.vue';
 
 
 const emit = defineEmits({
@@ -36,7 +36,10 @@ const data = useResult(result)
 
 const categories = ref([])
 
+const displaySearchList = ref(false)
+
 watch(data, (val) => {
+  displaySearchList.value = true
   if (data.value?.results) {
 
     if (queryName.value == 'episodes') {
@@ -66,11 +69,13 @@ onResult(queryResult => {
 })
 
 const fetchCharacters = ({ type, variables }) => {
+  if (type === 'charAll') displaySearchList.value = false
   emit('fetchCharacters', { type, variables })
 }
 
-const clearFilters = () => {
-  // data.value = undefined
+
+const filter = () => {
+
 }
 
 
@@ -83,33 +88,20 @@ const clearFilters = () => {
 
     <ul class="flex gap-2 justify-center text-rm-blue">
       <li>
-        <FilterButton @click="fetchQuery({type:'locations', variables:{page: 1}})">Locations</FilterButton>
+        <SearchButton @click="fetchCharacters({type: 'charAll', variables: {page: 1}})" class="uppercase">Show them all !</SearchButton>
       </li>
       <li>
-        <FilterButton @click="fetchQuery({type:'episodes', variables:{page: 1}})">Episodes</FilterButton>
+        <SearchButton @click="fetchQuery({type:'locations', variables:{page: 1}})">Locations</SearchButton>
       </li>
       <li>
-        <FilterButton @click="fetchQuery({type:'species', variables:{page: 1}})">Species</FilterButton>
-      </li>
-      <li>
-        <FilterButton @click="fetchQuery({type:'gender', variables:{page: 1}})">Gender</FilterButton>
-      </li>
-      <li>
-        <FilterButton @click="fetchQuery({type:'gender', variables:{page: 1}})">Is he still alive ?</FilterButton>
-      </li>
-      <li>
-        <FilterButton
-          @click="clearFilters"
-          class="border-red-500 hover:bg-red-500 hover:text-white"
-        >
-        Clear</FilterButton>
+        <SearchButton @click="fetchQuery({type:'episodes', variables:{page: 1}})">Episodes</SearchButton>
       </li>
     </ul>
 
   </nav>
 
   <Transition>  
-    <FilterList v-if="data" :info="data.info" :categories="categories" :queryName="queryName"
+    <SearchList v-if="data && displaySearchList" :info="data.info" :categories="categories" :queryName="queryName"
       @change-page="changePage"
       @fetch-characters="fetchCharacters"
       class="my-4 text-sm border rounded p-2"

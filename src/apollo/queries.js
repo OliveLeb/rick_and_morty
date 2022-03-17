@@ -60,12 +60,14 @@ export const GET_CHARACTERS_BY_EPISODE = gql`
 `
 
 export const GET_ALL_CHARACTERS = gql`
-  query getCharacters {
-    characters {
+  ${INFO_PART}, ${CHARACTERS_PART}
+  query getCharacters($page: Int) {
+    characters(page: $page) {
+      info {
+        ...InfoParts
+      }
       results {
-        id
-        name
-        image
+        ...CharactersParts
       }
     }
   }
