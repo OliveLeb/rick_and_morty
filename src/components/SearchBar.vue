@@ -5,6 +5,7 @@ import { ref, markRaw, computed, watch } from 'vue';
 import { sortEpisodesPerSeason , objectOfArraysToArray } from '@/utils'
 import { useGql } from '@/composables'
 import Icons from './Icons.vue';
+import FilterButton from './FilterButton.vue';
 
 
 const queries = markRaw({
@@ -64,13 +65,19 @@ onResult(queryResult => {
   
   <nav class="py-4">
 
-    <ul class="flex gap-2 text-rm-blue">
+    <ul class="flex gap-2 justify-center text-rm-blue">
       <li>
-        <button @click="fetchQuery('locations')" class="bg-rm-green p-2 font-bold">Locations</button>
+        <FilterButton @click="fetchQuery('locations')">Locations</FilterButton>
       </li>
       <li>
-        <button @click="fetchQuery('episodes')" class="bg-rm-green p-2 font-bold">Episodes</button>
+        <FilterButton @click="fetchQuery('episodes')">Episodes</FilterButton>
       </li>
+      <li>
+        <FilterButton @click="fetchQuery('species')">Species</FilterButton>
+      </li>
+      <li>
+        <FilterButton @click="fetchQuery('gender')">Gender</FilterButton>
+      </li>          
     </ul>
 
   </nav>
