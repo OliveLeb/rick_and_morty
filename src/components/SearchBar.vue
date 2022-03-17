@@ -1,19 +1,27 @@
 <script setup>
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { GET_EPISODES, GET_LOCATIONS } from '@/apollo/queries'
+import { GET_EPISODES, GET_LOCATIONS, GET_FILTERED_CHARACTERS } from '@/apollo/queries'
 import { ref, markRaw, computed, watch } from 'vue';
 import { sortEpisodesPerSeason , objectOfArraysToArray } from '@/utils'
 import { useGql } from '@/composables'
-import Icons from './Icons.vue';
 import FilterButton from './FilterButton.vue';
+import FilterList from './FilterList.vue';
 
+
+const emit = defineEmits({
+  fetchCharacters: ({ type, variables }) => {
+    if (type && variables) return true
+    return false
+  }
+})
 
 const queries = markRaw({
   locations: GET_LOCATIONS,
-  episodes: GET_EPISODES
+  episodes: GET_EPISODES,
+  filters: GET_FILTERED_CHARACTERS
 })
 
-const { variables, enable, queryName, fetchQuery, changePage } = useGql({page: 1})
+const { variables, enable, queryName, fetchQuery, changePage } = useGql()
 
 const gqlQuery = computed(() => queryName.value && queries[queryName.value])
 
@@ -57,6 +65,10 @@ onResult(queryResult => {
   }
 })
 
+const fetchCharacters = ({ type, variables }) => {
+  emit('fetchCharacters', { type, variables })
+}
+
 
 </script>
 
@@ -67,62 +79,31 @@ onResult(queryResult => {
 
     <ul class="flex gap-2 justify-center text-rm-blue">
       <li>
-        <FilterButton @click="fetchQuery('locations')">Locations</FilterButton>
+        <FilterButton @click="fetchQuery({type:'locations', variables:{page: 1}})">Locations</FilterButton>
       </li>
       <li>
-        <FilterButton @click="fetchQuery('episodes')">Episodes</FilterButton>
+        <FilterButton @click="fetchQuery({type:'episodes', variables:{page: 1}})">Episodes</FilterButton>
       </li>
       <li>
-        <FilterButton @click="fetchQuery('species')">Species</FilterButton>
+        <FilterButton @click="fetchQuery({type:'species', variables:{page: 1}})">Species</FilterButton>
       </li>
       <li>
-        <FilterButton @click="fetchQuery('gender')">Gender</FilterButton>
-      </li>          
+        <FilterButton @click="fetchQuery({type:'gender', variables:{page: 1}})">Gender</FilterButton>
+      </li>
+      <li>
+        <FilterButton @click="fetchQuery({type:'gender', variables:{page: 1}})">Is he still alive ?</FilterButton>
+      </li>       
     </ul>
 
   </nav>
 
-<Transition>  
-  <aside v-if="data" >
-    <div class="flex flex-wrap gap-2">
+  <Transition>  
+    <FilterList v-if="data" :data="data" :categories="categories" :queryName="queryName"
+      @change-page="changePage"
+      @fetch-characters="fetchCharacters"
+    />
+  </Transition>
 
-      <template v-if="queryName === 'locations' ">
-
-        <div v-for="el in categories" :key="el.id" >
-          <button @click="fetchCharacters(el.id)" class="border rounded border-gray-300 p-2 hover:bg-rm-blue hover:text-white">
-            {{ el.name }}
-          </button>
-        </div>
-
-        <div>
-          <button v-if="data.info.prev" @click="changePage(-1)"><Icons name="prev" /></button>
-          <button v-if="data.info.next" @click="changePage(1)"><Icons name="next" /></button>
-        </div>
-      </template>
-
-      <template v-if="queryName === 'episodes' ">
-      <div>
-        <div v-for="(episodes, season, index) in categories" :key="season" class="flex gap-4 mb-4">
-          <div class="p-2 border-b rounded">{{ season }}: </div>
-          <button v-for="episode in episodes" :key="episode.id" class="border rounded border-gray-300 p-2 hover:bg-rm-blue hover:text-white items-center">
-            {{ episode.episode.slice(3) }}
-          </button>
-          <button class="self-end" 
-            v-if="Object.keys(categories).length -1 == index && data.info.next" 
-            @click="changePage(1)"
-          >
-            load more...
-          </button>
-        </div>
-      </div>
-
-      </template>
-
-
-    </div>
-
-  </aside>
-</Transition>
 
 </template>
 

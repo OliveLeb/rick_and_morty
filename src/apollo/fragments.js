@@ -7,3 +7,11 @@ export const INFO_PART = gql`
     prev
   }
 `
+
+export const CHARACTERS_PART = gql`
+  fragment CharactersParts on Character {
+    id
+    name
+    image
+  }
+`

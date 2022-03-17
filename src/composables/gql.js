@@ -1,14 +1,12 @@
 import { ref } from 'vue'
 
-export const useGql = (params) => {
+export const useGql = () => {
   
 
   const enable = ref(false)
 
   // variables to pass to apollo-composable useQuery
-  const variables = ref({
-    ...params
-  })
+  const variables = ref({})
 
   /*
   * Query name (eg: 'locations', 'episodes' or else...) 
@@ -19,9 +17,11 @@ export const useGql = (params) => {
 
   /* 
   * Chose which query if multiple choice of queries to chose and enable useQuery
+  * set the variables if needed
   */
   const fetchQuery = (e) => {
-    if (queryName) queryName.value = e
+    queryName.value = e.type
+    if (variables) variables.value = {...e.variables}
     enable.value = true
   }
 
