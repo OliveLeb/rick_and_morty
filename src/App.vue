@@ -10,7 +10,7 @@ import TheFooter from './components/TheFooter.vue';
   
   <TheHeader />
 
-  <main class="flex-1 p-4">
+  <main class="flex-1 p-4 max-w-screen-lg m-auto">
     <RouterView />
   </main>
 

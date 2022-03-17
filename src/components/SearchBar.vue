@@ -69,6 +69,10 @@ const fetchCharacters = ({ type, variables }) => {
   emit('fetchCharacters', { type, variables })
 }
 
+const clearFilters = () => {
+  // data.value = undefined
+}
+
 
 </script>
 
@@ -92,15 +96,23 @@ const fetchCharacters = ({ type, variables }) => {
       </li>
       <li>
         <FilterButton @click="fetchQuery({type:'gender', variables:{page: 1}})">Is he still alive ?</FilterButton>
-      </li>       
+      </li>
+      <li>
+        <FilterButton
+          @click="clearFilters"
+          class="border-red-500 hover:bg-red-500 hover:text-white"
+        >
+        Clear</FilterButton>
+      </li>
     </ul>
 
   </nav>
 
   <Transition>  
-    <FilterList v-if="data" :data="data" :categories="categories" :queryName="queryName"
+    <FilterList v-if="data" :info="data.info" :categories="categories" :queryName="queryName"
       @change-page="changePage"
       @fetch-characters="fetchCharacters"
+      class="my-4 text-sm"
     />
   </Transition>
 

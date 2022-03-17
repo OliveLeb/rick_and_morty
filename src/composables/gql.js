@@ -28,8 +28,9 @@ export const useGql = () => {
   /*
   * Change page variable then enable useQuery
   */
-  const changePage = (val) => {
-    variables.value.page += val
+  const changePage = (val, type) => {
+    if (type === 'page') variables.value.page = val
+    else variables.value.page += val
     enable.value = true
   }
 

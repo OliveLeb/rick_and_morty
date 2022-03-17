@@ -17,8 +17,8 @@ import CharacterCard from './CharacterCard.vue'
 
 
 <template>
-  <section>
-    <h2>Characters from {{ data.name }}</h2>
+  <section class="py-10">
+    <h2 class="text-3xl font bold text-center mb-10">Characters from {{ data.name }} <span v-if="data.episode">- {{data.episode}}</span></h2>
 
     <div class="flex flex-wrap gap-6 justify-center">
       <CharacterCard v-for="character in characters" :key="character.id" :character="character"/>
