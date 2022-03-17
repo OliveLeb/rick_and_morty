@@ -1,10 +1,11 @@
 <script setup>
-import { computed, ref, toRaw } from 'vue';
+import { computed, ref } from 'vue';
 import Pagination from './Pagination.vue';
 
   const emit = defineEmits({
     fetchCharacters: null,
-    changePage: null
+    changePage: null,
+    closeSearch: null
   })
 
   const props = defineProps({
@@ -37,14 +38,9 @@ import Pagination from './Pagination.vue';
     return false
   })
 
-  const isLastPage = computed(() => {
-    if (!props.info.next) return true
-    return false
-  })
-
   const changePage = (val, type) => {
     if (props.queryName === 'episodes') {
-      if (isLastPage.value) {
+      if (!props.info.next) {
         show.value += 2
         return
       }
@@ -61,7 +57,7 @@ import Pagination from './Pagination.vue';
 
 
 <template>
-  <aside>
+  <aside class="relative">
 
       <template v-if="queryName === 'locations' ">
 
@@ -112,6 +108,8 @@ import Pagination from './Pagination.vue';
 
         </div>
       </template>
+
+      <button class="absolute top-0 right-2" @click="$emit('closeSearch')">X</button>
 
   </aside>
 </template>
