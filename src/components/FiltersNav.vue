@@ -11,7 +11,7 @@
 
   const submit = () => {
     showFiltersMobileMenu.value = false
-    emit('filterCharacters', {type: 'charAll', variables: {
+    emit('filterCharacters', {type: 'all', variables: {
       page: 1,
       filter: {
         ...form.value
@@ -37,7 +37,7 @@
 
 
 <template>
-  <aside class="py-0.5 sm:py-2 px-4 rounded bg-gray-100 sticky top-[6.55rem] sm:top-0 md:static">
+  <aside class="py-0.5 sm:py-2 px-4 rounded border border-gray-300 bg-white sticky top-[6.90rem] sm:top-0 md:static">
 
     <div class="block md:hidden" @click="showFiltersMobileMenu = !showFiltersMobileMenu">
       <div class="flex justify-center items-center">
@@ -71,7 +71,7 @@
 
       <div class="flex flex-col mb-10">
         <label for="gender" class="font-bold">Gender : </label>
-        <select id="gender" v-model="form.gender" class="text-black focus-visible:outline-none">
+        <select id="gender" v-model="form.gender" class="text-black focus-visible:outline-none rounded border border-gray-300">
           <option v-for="gender in possibleGenders" :key="gender"
             :value="gender">
             {{ gender }}
@@ -109,7 +109,7 @@
 
           <div class="flex flex-col mb-10">
             <label for="gender" class="font-bold">Gender : </label>
-            <select id="gender" v-model="form.gender" class="text-black focus-visible:outline-none">
+            <select id="gender" v-model="form.gender" class="text-black focus-visible:outline-none rounded border border-gray-300">
               <option v-for="gender in possibleGenders" :key="gender"
                 :value="gender">
                 {{ gender }}

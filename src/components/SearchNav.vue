@@ -15,7 +15,7 @@ const emit = defineEmits({
 })
 
 const fetchCharacters = ({ type, variables }) => {
-  if (type === 'charAll') displaySearchList.value = false
+  if (type === 'all') displaySearchList.value = false
   emit('fetchCharacters', { type, variables })
 }
 
@@ -88,8 +88,8 @@ const closeSearchList = () => {
 
     <ul class="gap-2 justify-center text-rm-blue hidden sm:flex">
       <li>
-        <SearchButton @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)" 
-        class="uppercase" :class="queryName === 'charAll' && 'bg-rm-green/75'">
+        <SearchButton @click="launchQuery({type: 'all', variables: {page: 1}}, fetchCharacters)" 
+        class="uppercase" :class="queryName === 'all' && 'bg-rm-green/75'">
           Show them all !
         </SearchButton>
       </li>
@@ -121,12 +121,12 @@ const closeSearchList = () => {
   </Transition>
 
   <!-- MOBILE -->
-  <div v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed inset-0 top-[6.56rem] bg-neutral-700/75 z-50" @click="openMobileMenu = !openMobileMenu"></div>
+  <div v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed inset-0 top-[6.95rem] bg-neutral-700/75 z-50" @click="openMobileMenu = !openMobileMenu"></div>
   <Transition name="menu-slide">
-        <aside v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed top-[6.56rem] bottom-0 left-0 w-2/3 bg-white z-[100]">
-          <ul class="flex flex-col gap-4 items-center pt-10">
-            <li @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)"
-              class="font-bold" :class="{'text-rm-blue': (queryName === 'charAll' && displaySearchList)}"
+        <aside v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed top-[6.95rem] bottom-0 left-0 w-2/3 bg-white z-[100] overflow-y-auto">
+          <ul class="flex flex-col gap-4 items-center py-4 sm:pt-10">
+            <li @click="launchQuery({type: 'all', variables: {page: 1}}, fetchCharacters)"
+              class="font-bold" :class="{'text-rm-blue': (queryName === 'all' && displaySearchList)}"
             >
               Show them all !
             </li>
@@ -146,7 +146,7 @@ const closeSearchList = () => {
             @change-page="changePage"
             @fetch-characters="fetchCharacters"
             @close-search="closeSearchList"
-            class="my-4 text-sm border rounded p-2"
+            class="sm:my-4 text-sm border rounded p-2"
           />
 
         </aside>

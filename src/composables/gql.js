@@ -12,9 +12,9 @@ export const useGql = () => {
   
 
   const queries = markRaw({
-    charLocation: GET_CHARACTERS_BY_LOCATION,
-    charEpisode: GET_CHARACTERS_BY_EPISODE,
-    charAll: GET_ALL_CHARACTERS,
+    by_location: GET_CHARACTERS_BY_LOCATION,
+    by_episode: GET_CHARACTERS_BY_EPISODE,
+    all: GET_ALL_CHARACTERS,
     locations: GET_LOCATIONS,
     episodes: GET_EPISODES,
   })

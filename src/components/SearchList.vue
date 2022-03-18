@@ -23,7 +23,7 @@ import Pagination from './Pagination.vue';
   /*
   * Handle episodes pagination
   * if not episodes object return props categories
-  * if show >= 0 return props categories (it means )
+  * if show >= 0 return props categories (it means that all episodes are already displayed)
   */
   const cat = computed(() => {
     if (props.queryName !== 'episodes') return props.categories
@@ -61,10 +61,11 @@ import Pagination from './Pagination.vue';
 
 <template>
   <aside class="relative">
+    
       <template v-if="queryName === 'locations' ">
         <div class="flex flex-wrap gap-2 mb-4 justify-center">
           <div v-for="el in cat" :key="el.id" >
-            <button @click="$emit('fetchCharacters', {type:'charLocation', variables: {locationId: el.id }})"
+            <button @click="$emit('fetchCharacters', {type:'by_location', variables: {locationId: el.id }})"
               class="border rounded border-gray-300 p-1 hover:bg-rm-blue hover:text-white"
             >
               {{ el.name }}
@@ -83,7 +84,7 @@ import Pagination from './Pagination.vue';
               <div class="p-1 border-b rounded mr-1">{{ season }}: </div>
               <div class="flex gap-2 flex-wrap">
                 <button v-for="episode in episodes" :key="episode.id"
-                  @click="$emit('fetchCharacters', {type:'charEpisode', variables: {episodeId: episode.id }})"
+                  @click="$emit('fetchCharacters', {type:'by_episode', variables: {episodeId: episode.id }})"
                   class="border rounded border-gray-300 p-1 hover:bg-rm-blue hover:text-white items-center"
                 >
                   {{ episode.episode.slice(3) }}
