@@ -27,12 +27,7 @@ import Pagination from '../components/Pagination.vue';
 
 
 <template>
-  <section class="py-10">
-
-    <Pagination v-if="data.info" :prev="data.info.prev" :next="data.info.next" :totalPages="data.info.pages"
-      @change-page="changePage"
-      class="mb-6"
-    />
+  <section>
 
     <div class="flex flex-wrap gap-6 justify-center">
       <TransitionGroup name="list">
@@ -40,10 +35,6 @@ import Pagination from '../components/Pagination.vue';
       </TransitionGroup>
     </div>
 
-    <Pagination v-if="data.info" :prev="data.info.prev" :next="data.info.next" :totalPages="data.info.pages"
-      @change-page="changePage"
-      class="mt-6"
-    />
   </section>
 </template>
 

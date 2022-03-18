@@ -22,6 +22,7 @@ const fetchCharacters = ({ type, variables }) => {
 
 const { data, queryName, fetchQuery, changePage } = useGql()
 
+
 const categories = ref([])
 
 // Regroupe episodes per season every new page of episodes is called
@@ -42,6 +43,7 @@ watch(data, (val) => {
 })
 
 const launchQuery = (variables, next) => {
+  // if (mobileMenuCanBeShown.value) openMobileMenu.value = false
   displaySearchList.value = true
   next(variables)
 }
@@ -60,7 +62,11 @@ onMounted(() => {
   })
 })
 watch(size, () => {
-  if (size.value >= 768) return mobileMenuCanBeShown.value = false
+  if (size.value >= 640) {
+    mobileMenuCanBeShown.value = false
+    openMobileMenu.value = false
+    return
+  }
   return mobileMenuCanBeShown.value = true
 })
 
@@ -70,46 +76,63 @@ watch(size, () => {
 
 <template>
   
-  <nav class="md:py-4 flex md:justify-center">
+  <nav class="sm:py-4 flex sm:justify-center">
 
-    <ul class="gap-2 justify-center text-rm-blue hidden md:flex">
+    <ul class="gap-2 justify-center text-rm-blue hidden sm:flex">
       <li>
-        <!-- <SearchButton @click="fetchCharacters({type: 'charAll', variables: {page: 1}})" class="uppercase">Show them all !</SearchButton> -->
         <SearchButton @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)" class="uppercase">Show them all !</SearchButton>
       </li>
       <li>
-        <SearchButton @click="launchQuery({type:'locations', variables:{page: 1}}, fetchQuery)">Locations</SearchButton>
-        <!-- <SearchButton @click="fetchQuery({type:'locations', variables:{page: 1}})">Locations</SearchButton> -->
+        <SearchButton @click="launchQuery({type:'locations', variables:{page: 1}}, fetchQuery)">By Locations</SearchButton>
       </li>
       <li>
-        <SearchButton @click="launchQuery({type:'episodes', variables:{page: 1}}, fetchQuery)">Episodes</SearchButton>
-        <!-- <SearchButton @click="fetchQuery({type:'episodes', variables:{page: 1}})">Episodes</SearchButton> -->
+        <SearchButton @click="launchQuery({type:'episodes', variables:{page: 1}}, fetchQuery)">By Episodes</SearchButton>
       </li>
     </ul>
 
-    <BurgerMenu :open="openMobileMenu" @click="() => openMobileMenu = !openMobileMenu" class="md:hidden mt-auto"/>
+    <BurgerMenu :open="openMobileMenu" @click="openMobileMenu = !openMobileMenu" class="sm:hidden mt-auto"/>
 
   </nav>
 
-  <div v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed inset-0 top-28 bg-neutral-700/75 z-50"></div>
-
-  <Transition name="menu-slide">
-    <aside v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed top-28 bottom-0 left-0 w-2/3 min-h-[300px] bg-white z-[100]">
-      <ul class="flex flex-col gap-4 items-center pt-10">
-        <li @click="fetchCharacters({type: 'charAll', variables: {page: 1}})">Show them all !</li>
-        <li @click="fetchQuery({type:'locations', variables:{page: 1}})">Locations</li>
-        <li @click="fetchQuery({type:'episodes', variables:{page: 1}})">Episodes</li>
-      </ul>
-    </aside>
-  </Transition>
-
   <Transition>  
-    <SearchList v-if="data && displaySearchList" :info="data.info" :categories="categories" :queryName="queryName"
+    <SearchList v-if="data && displaySearchList && !mobileMenuCanBeShown" :info="data.info" :categories="categories" :queryName="queryName"
       @change-page="changePage"
       @fetch-characters="fetchCharacters"
       @close-search="closeSearchList"
-      class="my-4 text-sm border rounded p-2"
+      class="my-4 text-sm border rounded p-2 max-w-screen-lg m-auto"
     />
+  </Transition>
+
+  <!-- MOBILE -->
+  <div v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed inset-0 top-[6.56rem] bg-neutral-700/75 z-50" @click="openMobileMenu = !openMobileMenu"></div>
+  <Transition name="menu-slide">
+        <aside v-if="mobileMenuCanBeShown && openMobileMenu" class="fixed top-[6.56rem] bottom-0 left-0 w-2/3 bg-white z-[100]">
+          <ul class="flex flex-col gap-4 items-center pt-10">
+            <li @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)"
+              class="font-bold" :class="{'text-rm-blue': (queryName === 'charAll' && displaySearchList)}"
+            >
+              Show them all !
+            </li>
+            <li @click="launchQuery({type:'locations', variables:{page: 1}}, fetchQuery)"
+              class="font-bold" :class="{'text-rm-blue': (queryName === 'locations' && displaySearchList)}"
+            >
+              By Locations
+            </li>
+            <li @click="launchQuery({type:'episodes', variables:{page: 1}}, fetchQuery)"
+              class="font-bold" :class="{'text-rm-blue': (queryName === 'episodes' && displaySearchList)}"
+            >
+              By Episodes
+            </li>
+          </ul>
+
+          <SearchList v-if="data && displaySearchList" :info="data.info" :categories="categories" :queryName="queryName"
+            @change-page="changePage"
+            @fetch-characters="fetchCharacters"
+            @close-search="closeSearchList"
+            class="my-4 text-sm border rounded p-2"
+          />
+
+        </aside>
   </Transition>
 
 </template>

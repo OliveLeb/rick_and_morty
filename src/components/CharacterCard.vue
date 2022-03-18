@@ -11,7 +11,7 @@
 <template>
 
   <article class="rounded-lg overflow-hidden">
-    <figure class="w-48">
+    <figure class="w-40 sm:w-48">
         <img :src="character.image" alt="">
       <figcaption class="text-center">
         {{ character.name }}

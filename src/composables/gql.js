@@ -60,7 +60,7 @@ export const useGql = () => {
   /*
   * Fetch the query, passing variable if needed
   */
-  const { result, loading, error, onResult, fetchMore } = useQuery(
+  const { result, loading, error, onResult } = useQuery(
     gqlQuery,
     variables,
     () => ({ enabled: enable.value})
@@ -87,7 +87,6 @@ export const useGql = () => {
     changePage,
     data,
     loading,
-    error,
-    fetchMore
+    error
   }
 }

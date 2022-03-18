@@ -1,6 +1,5 @@
 import { createApp, render, h, provide } from 'vue'
 import App from './App.vue'
-import router from './router'
 import { apolloClient } from '@/apollo/client'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
@@ -12,7 +11,5 @@ const app = createApp({
   },
   render: () => h(App)
 })
-
-app.use(router)
 
 app.mount('#app')
