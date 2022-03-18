@@ -2,6 +2,8 @@
 
 This app allows you to search for Rick & Morty's characters.
 
+[Demo](https://rick-and-morty-oliveleb.vercel.app/)
+
 ## Setup
 
 Install the dependencies
