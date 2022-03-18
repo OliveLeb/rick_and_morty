@@ -20,16 +20,21 @@ import Pagination from './Pagination.vue';
 
   const show = ref(0)
 
-  // Handle episodes pagination
+  /*
+  * Handle episodes pagination
+  * if not episodes object return props categories
+  * if show >= 0 return props categories (it means )
+  */
   const cat = computed(() => {
     if (props.queryName !== 'episodes') return props.categories
     if (show.value >= 0) return props.categories
 
     return Object.keys(props.categories).slice(0, show.value).reduce((res, key) => {
-      res[key] = props.categories[key] 
+      res[key] = props.categories[key]
       return res
     }, {})
   })
+
 
   const isAllFetched = computed(() => {
     if (!props.info.next) {
@@ -38,17 +43,15 @@ import Pagination from './Pagination.vue';
     return false
   })
 
-  const changePage = (val, type) => {
-    if (props.queryName === 'episodes') {
-      if (!props.info.next) {
-        show.value += 2
-        return
-      }
-    }
+  const loadMore = (val, type) => {
+    // if query episodes and no more page to fetch, extend episodes array with 2 more row contained in props.categories
+    // props.categories is not mutated because it comes from the parent whose not rerendered
+    if (props.queryName === 'episodes' && !props.info.next) return show.value += 2
+    // if pages still remain to fetch, emit the query
     emit('changePage', val, type)
   }
 
-  const viewLess = () => {
+  const viewLessEpisodes = () => {
     show.value -= 2
   }
 
@@ -69,7 +72,7 @@ import Pagination from './Pagination.vue';
           </div>
         </div>
 
-        <Pagination :prev="info.prev" :next="info.next" :totalPages="info.pages" @change-page="changePage"/>
+        <Pagination :prev="info.prev" :next="info.next" :totalPages="info.pages" @change-page="loadMore"/>
       </template>
 
 
@@ -91,12 +94,12 @@ import Pagination from './Pagination.vue';
           <div class="flex justify-end gap-4">
             <button class="text-rm-blue font-bold hover:underline decoration-dotted underline-offset-2"
               v-if="!isAllFetched" 
-              @click="changePage(1)"
+              @click="loadMore(1)"
             >
               Load more...
             </button>
 
-            <button @click="viewLess"
+            <button @click="viewLessEpisodes"
             v-if="info.prev && Object.keys(cat).length > 2"
             class="text-rm-blue font-bold hover:underline decoration-dotted underline-offset-2"
              >

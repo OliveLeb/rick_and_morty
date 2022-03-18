@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { sortEpisodesPerSeason , objectOfArraysToArray } from '@/utils'
 import { useGql } from '@/composables'
 import SearchButton from './SearchButton.vue';
@@ -39,18 +39,22 @@ watch(data, (val) => {
     return
   }
   categories.value = val.results
-
 })
 
+
 const launchQuery = (variables, next) => {
-  // if (mobileMenuCanBeShown.value) openMobileMenu.value = false
+  
   displaySearchList.value = true
+
+  const urlParams = new URLSearchParams(window.location.search)
+  if(urlParams.get('categories') === variables.type && queryName.value === variables.type) return
+  urlParams.set('categories', variables.type)
+  history.replaceState(null, null, '?'+urlParams.toString());
+
   next(variables)
 }
 
 const displaySearchList = ref(false)
-const closeSearchList = () => displaySearchList.value = false
-
 
 const openMobileMenu = ref(false)
 const mobileMenuCanBeShown = ref(false)
@@ -70,6 +74,10 @@ watch(size, () => {
   return mobileMenuCanBeShown.value = true
 })
 
+const closeSearchList = () => {
+  displaySearchList.value = !displaySearchList.value
+}
+
 
 </script>
 
@@ -80,13 +88,22 @@ watch(size, () => {
 
     <ul class="gap-2 justify-center text-rm-blue hidden sm:flex">
       <li>
-        <SearchButton @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)" class="uppercase">Show them all !</SearchButton>
+        <SearchButton @click="launchQuery({type: 'charAll', variables: {page: 1}}, fetchCharacters)" 
+        class="uppercase" :class="queryName === 'charAll' && 'bg-rm-green/75'">
+          Show them all !
+        </SearchButton>
       </li>
       <li>
-        <SearchButton @click="launchQuery({type:'locations', variables:{page: 1}}, fetchQuery)">By Locations</SearchButton>
+        <SearchButton @click="launchQuery({type:'locations', variables:{page: 1}}, fetchQuery)" 
+        :class="queryName === 'locations' && 'bg-rm-green/75'">
+          By Locations
+        </SearchButton>
       </li>
       <li>
-        <SearchButton @click="launchQuery({type:'episodes', variables:{page: 1}}, fetchQuery)">By Episodes</SearchButton>
+        <SearchButton @click="launchQuery({type:'episodes', variables:{page: 1}}, fetchQuery)" 
+        :class="queryName === 'episodes' && 'bg-rm-green/75'">
+          By Episodes
+        </SearchButton>
       </li>
     </ul>
 
@@ -99,7 +116,7 @@ watch(size, () => {
       @change-page="changePage"
       @fetch-characters="fetchCharacters"
       @close-search="closeSearchList"
-      class="my-4 text-sm border rounded p-2 max-w-screen-lg m-auto"
+      class="my-4 text-sm border rounded p-2 pr-8 max-w-screen-lg m-auto"
     />
   </Transition>
 
