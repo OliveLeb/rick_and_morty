@@ -22,7 +22,7 @@ import Icons from './Icons.vue';
 
 
 <template>
-  <div class="flex justify-center">
+  <div v-if="totalPages > 1" class="flex justify-center">
 
     <ul class="flex border border-rm-green/50 rounded w-fit">
       <li v-if="prev" class="py-1 px-2 flex items-center cursor-pointer hover:bg-rm-green hover:text-white border-r"
